@@ -163,3 +163,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+istio:
+  # Require mTLS for all traffic into Pods in this namespace
+  strictMtls: true
