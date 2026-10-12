@@ -87,9 +87,6 @@ httpRoute:
   parentRefs:
   - name: lab-gateway
     sectionName: web
-    namespace: traefik
-  - name: lab-gateway
-    sectionName: web
     namespace: istio-ingress
   # Hostnames matching HTTP header.
   hostnames: [] 
