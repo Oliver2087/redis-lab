@@ -5,6 +5,11 @@ metadata:
   namespace: istio-ingress
 spec:
   gatewayClassName: istio
+  infrastructure:
+    parametersRef:
+      group: ""
+      kind: ConfigMap
+      name: lab-gateway-options
   listeners:
   - name: web
     protocol: HTTP
@@ -15,3 +20,29 @@ spec:
         selector:
           matchLabels:
             kubernetes.io/metadata.name: redis-lab
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lab-gateway-options
+  namespace: istio-ingress
+data:
+  deployment: |
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            ingress-ready: "true"
+          tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          containers:
+          - name: istio-proxy
+            ports:
+            - containerPort: 80
+              hostPort: 80
+              protocol: TCP
+  service: |
+    spec:
+      type: ClusterIP
