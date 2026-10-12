@@ -7,3 +7,4 @@ metadata:
   name: redis-lab
   labels:
     istio-injection: enabled
+  name: istio-ingress

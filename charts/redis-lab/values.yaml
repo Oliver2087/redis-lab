@@ -88,6 +88,9 @@ httpRoute:
   - name: lab-gateway
     sectionName: web
     namespace: traefik
+  - name: lab-gateway
+    sectionName: web
+    namespace: istio-ingress
   # Hostnames matching HTTP header.
   hostnames: [] 
   # List of rules and filters applied.
