@@ -1,0 +1,29 @@
+# examples/httproute-rewrite.yaml  (optional experiment, not applied by startup.sh)
+# Shows why rewrite rules exist: clients call /v1/..., but the app only
+# knows /api/... The Gateway rewrites the path before forwarding.
+#   curl http://localhost/v1/hits   ->  app receives /api/hits
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: redis-lab-api-v1
+  namespace: redis-lab
+spec:
+  parentRefs:
+    - name: lab-gateway
+      namespace: traefik
+      sectionName: web
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api
+      backendRefs:
+        - name: redis-lab-api
+          port: 80
+ 

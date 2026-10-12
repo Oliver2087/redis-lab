@@ -1,0 +1,16 @@
+# Internal-only Service for Redis. Gives Redis the stable hostname "redis" that the app can use to find it.
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: redis
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379

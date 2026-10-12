@@ -1,0 +1,14 @@
+# Non-secret settings: how the app finds Redis and Redis's own config file
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  namespace: {{ .Release.Namespace }}
+data:
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  redis.conf: |
+    dir /data
+    appendonly yes
+    appendfsync everysec

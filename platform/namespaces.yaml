@@ -1,0 +1,7 @@
+# platform/namespaces.yaml
+# Namespaces are created by the platform, not by the app's chart, so the
+# Secret can be created before the app is installed.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: redis-lab

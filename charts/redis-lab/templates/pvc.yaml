@@ -1,0 +1,13 @@
+# Persistent storage for Redis Data, so it survives pod restarts and re-creations.
+# kind's default standard StorageClass provides it on the node's disk.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
