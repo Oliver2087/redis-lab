@@ -5,6 +5,8 @@ All connection settings come from environment variables, so the same
 code runs unchanged on your laptop, in Docker, and in Kubernetes.
 """
 import os
+import asyncio
+import random
 
 import redis
 from fastapi import FastAPI, HTTPException
@@ -27,6 +29,19 @@ r = redis.Redis(
 
 app = FastAPI(title="Redis Lab API")
 
+@app.get("/api/slow")
+async def slow(seconds: float = 2.0):
+    """Sleeps before answering, to test timeouts."""
+    await asyncio.sleep(seconds)
+    return {"slept": seconds}
+
+
+@app.get("/api/flaky")
+async def flaky(fail_rate: float = 0.5):
+    """Fails randomly, to test retries."""
+    if random.random() < fail_rate:
+        raise HTTPException(status_code=500, detail="flaky failure")
+    return {"ok": True}
 
 class Item(BaseModel):
     value: str
